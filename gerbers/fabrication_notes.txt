@@ -1,0 +1,7 @@
+JLCPCB Order Notes:
+- 5 boards panel
+- Green solder mask
+- White silkscreen
+- HASL finish
+- 1.6mm thickness
+- Full assembly optional (BOM + CPL included in repo)

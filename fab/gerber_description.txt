@@ -1,0 +1,9 @@
+MercySolar v1.0 Gerber Package
+- mercy_solar-Top.gbr
+- mercy_solar-Bottom.gbr
+- mercy_solar-TopSilk.gbr
+- mercy_solar-BottomSilk.gbr
+- mercy_solar-TopMask.gbr
+- mercy_solar-BottomMask.gbr
+- mercy_solar-EdgeCuts.gbr
+- mercy_solar.drl (Excellon drill)

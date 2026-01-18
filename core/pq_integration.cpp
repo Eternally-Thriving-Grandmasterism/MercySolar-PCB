@@ -1,56 +1,57 @@
 /*
-PQIntegration-Pinnacle — Hybrid Post-Quantum Crypto + SPHINCS+ Ultra-Secure Alternative
+PQIntegration-Pinnacle — Hybrid Post-Quantum Crypto + McEliece KEM Alternative
 MercySolar + MercyOS Ultramasterpiece — Jan 18 2026
 
 Hybrid post-quantum integration:
-- Key encapsulation: Kyber-768
-- Signatures: Dilithium-3 balanced | FALCON-1024 compact | SPHINCS+-256f ultra-secure (~16KB sigs)
+- Key encapsulation: Kyber-768 primary | Classic McEliece-8192128f ultra-secure alternative
+- Signatures: Dilithium-3 / FALCON / SPHINCS+ (previous)
 - Toggle via #define — mercy-mode selection
 - Classic fallback
 - Enclave/TPM sealed — mercy-zero plaintext
-- ESP32-S3 optimized (liboqs)
+- ESP32-S3 note: McEliece large keys — use for critical offline only
 */
 
 #include <oqs/oqs.h>
 
-#define SIGNATURE_MODE_DILITHIUM  // Options: DILITHIUM, FALCON, SPHINCS
+#define KEM_MODE_KYBER     // Options: KYBER, MCELIECE
 
 class PQIntegration {
 private:
-#if defined(SIGNATURE_MODE_DILITHIUM)
-  OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
-#elif defined(SIGNATURE_MODE_FALCON)
-  OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_falcon_1024);
-#elif defined(SIGNATURE_MODE_SPHINCS)
-  OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_sphincs_plus_256f_simple);
+#if defined(KEM_MODE_KYBER)
+  OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
+#elif defined(KEM_MODE_MCELIECE)
+  OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_classic_mceliece_8192128f);
 #else
-  #error "Select signature mode: DILITHIUM, FALCON, or SPHINCS"
+  #error "Select KEM mode: KYBER or MCELIECE"
 #endif
   uint8_t *public_key;
   uint8_t *secret_key;
+  uint8_t *ciphertext;
+  uint8_t *shared_secret;
   
 public:
   void init() {
-    public_key = malloc(sig->length_public_key);
-    secret_key = malloc(sig->length_secret_key);
-    OQS_SIG_keypair(sig, public_key, secret_key);
+    public_key = malloc(kem->length_public_key);
+    secret_key = malloc(kem->length_secret_key);
+    ciphertext = malloc(kem->length_ciphertext);
+    shared_secret = malloc(kem->length_shared_secret);
+    OQS_KEM_keypair(kem, public_key, secret_key);
   }
   
-  size_t sign(uint8_t *signature, const uint8_t *message, size_t message_len) {
-    size_t sig_len;
-    OQS_SIG_sign(sig, signature, &sig_len, message, message_len, secret_key);
-    return sig_len;
+  void encapsulate() {
+    OQS_KEM_encaps(kem, ciphertext, shared_secret, public_key);
   }
   
-  int verify(const uint8_t *signature, size_t signature_len,
-             const uint8_t *message, size_t message_len) {
-    return OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+  void decapsulate() {
+    OQS_KEM_decaps(kem, shared_secret, ciphertext, secret_key);
   }
   
   ~PQIntegration() {
     free(public_key);
     free(secret_key);
-    OQS_SIG_free(sig);
+    free(ciphertext);
+    free(shared_secret);
+    OQS_KEM_free(kem);
   }
 };
 
@@ -62,5 +63,5 @@ void setup() {
 
 // Example usage
 void loop() {
-  // Use selected mode for secure firmware update / shard seal
+  // Use selected KEM for secure key exchange / shard seal
 }

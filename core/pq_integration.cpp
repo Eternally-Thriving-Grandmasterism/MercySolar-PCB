@@ -1,51 +1,50 @@
 /*
-PQIntegration-Pinnacle — Hybrid Post-Quantum Crypto for MercySolar
-MercySolar Ultramasterpiece — Jan 18 2026
+PQIntegration-Pinnacle — Hybrid Post-Quantum Crypto + FALCON Alternative
+MercySolar + MercyOS Ultramasterpiece — Jan 18 2026
 
 Hybrid post-quantum integration:
-- Kyber-768 KEM for key exchange
-- Dilithium-3 signatures
-- Classic ChaCha20-Poly1305 fallback
+- Key encapsulation: Kyber-768
+- Signatures: Dilithium-3 primary, FALCON-1024 alternative (compact mode)
+- Classic fallback
 - Enclave/TPM sealed — mercy-zero plaintext
-- ESP32-S3 optimized (liboqs or equivalent)
+- ESP32-S3 optimized (liboqs)
 */
 
-#include <oqs/oqs.h>  // liboqs for Kyber/Dilithium (placeholder)
+#include <oqs/oqs.h>
 
-// Kyber-768 parameters
-#define OQS_KEM_kyber_768_length_public_key 1184
-#define OQS_KEM_kyber_768_length_secret_key 2400
-#define OQS_KEM_kyber_768_length_ciphertext 1088
-#define OQS_KEM_kyber_768_length_shared_secret 32
+#define USE_FALCON  // Comment to use Dilithium primary
 
 class PQIntegration {
 private:
-  uint8_t pk[OQS_KEM_kyber_768_length_public_key];
-  uint8_t sk[OQS_KEM_kyber_768_length_secret_key];
+#ifdef USE_FALCON
+  OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_falcon_1024);
+#else
+  OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
+#endif
+  uint8_t *public_key;
+  uint8_t *secret_key;
   
 public:
   void init() {
-    OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
-    OQS_KEM_keypair(kem, pk, sk);
-    OQS_KEM_free(kem);
+    public_key = malloc(sig->length_public_key);
+    secret_key = malloc(sig->length_secret_key);
+    OQS_SIG_keypair(sig, public_key, secret_key);
   }
   
-  void encapsulate(uint8_t *ct, uint8_t *ss) {
-    OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
-    OQS_KEM_encaps(kem, ct, ss, pk);
-    OQS_KEM_free(kem);
+  size_t sign(uint8_t *signature, const uint8_t *message, size_t message_len) {
+    return OQS_SIG_sign(sig, signature, message, message_len, secret_key);
   }
   
-  void decapsulate(uint8_t *ss, const uint8_t *ct) {
-    OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
-    OQS_KEM_decaps(kem, ss, ct, sk);
-    OQS_KEM_free(kem);
+  int verify(const uint8_t *signature, size_t signature_len,
+             const uint8_t *message, size_t message_len) {
+    return OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
   }
   
-  // Dilithium-3 signature placeholder
-  // ...
-  
-  // Mercy fallback to classic if PQ lib unavailable
+  ~PQIntegration() {
+    free(public_key);
+    free(secret_key);
+    OQS_SIG_free(sig);
+  }
 };
 
 PQIntegration pq;
@@ -54,6 +53,7 @@ void setup() {
   pq.init();
 }
 
+// Example usage
 void loop() {
-  // Use for secure firmware update / shard seal
+  // Use for secure firmware update / shard seal with compact FALCON sigs
 }

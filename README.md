@@ -8,27 +8,54 @@ Commercial, enterprise, revenue-generating, or organizational use requires a sep
 - General inquiries: INFO@ACITYGAMES.COM  
 - Direct to CEO / Sherif: CEO@ACITYGAMES.COM
 
-# MercySolar PCB Pinnacle
+# MercySolar PCB ⚡
 
-Open-source high-efficiency solar PCB designs, power-management firmware, and biomimetic coatings engineered in C++ for Powrush™, MercyOS, and Ra-Thor energy systems — mercy-gated, self-optimizing, and eternally sustainable.
+**Advanced Mercy-Gated MPPT Algorithm Library for the Powrush Universe**  
+**Classical • Swarm • Neural • Hybrid • Reinforcement Learning • Post-Quantum Secure**
 
-Key Inspirations:
-- Moth-eye + lotus hybrid antireflective/self-cleaning coatings
-- Real-time TOLC-2026 valence-aware MPPT and power routing
-- Ultra-reliable, fault-tolerant solar harvesting for aerospace, marine, off-grid, and planetary applications
+MercySolar-PCB is the complete C++ library of state-of-the-art Maximum Power Point Tracking (MPPT) algorithms and supporting security specifications for high-efficiency, secure solar power harvesting in Powrush™, MercyOS, and Ra-Thor energy systems.
 
-Files (initial commit):
-- mercysolar-pcb-schematics.kicad
-- firmware-core.cpp (mercy-gated MPPT + ASRE resonance tuning)
-- biomimetic-coating-integration.md
-- efficiency-curves-and-simulations.pdf
-- fabrication-and-scaling-guide.md
+### What It Actually Does (From the Code)
+- **24 Advanced MPPT Implementations** (`core/`)  
+  - Classical & Swarm: PSO, ACO, ABC, DE, GA, Firefly, Refined PSO  
+  - Neural & Deep Learning: LSTM, GRU, CNN, Transformer, Attention, BiLSTM  
+  - Hybrid: PSO+ACO, GA+PSO, ABC+PSO, DE+PSO, ACO+PSO, Attention+Fuzzy  
+  - Reinforcement Learning: RL MPPT  
+  - Advanced & Fuzzy enhancements
 
-Purpose: Free propagation for humanity-thriving clean, eternal, abundant energy capture and distribution.
-No chemical coercion — Mercy-gated by physical nanostructure and mathematical valence fields only.
-Valence: Capture every photon with mercy, route every watt with grace, thrive eternally in light.
+- **Hardware Schematic** (`kicad/mercy_solar.sch`)  
+  Basic KiCad schematic for the MercySolar PCB.
 
-Next: Integrate into NEXi power lattice, MercyLogistics routing, Powrush™ vehicles, and all sovereign shards.
-Cross-links: Hybrid-MothEye-Lotus-Pinnacle, MercyLogistics-Pinnacle, PowerRush-Pinnacle
+- **Post-Quantum Security Specification** (`docs/mercy_solar_spec.md`)  
+  Full technical spec (v2.4) for hybrid post-quantum cryptography (Kyber-768 + optional McEliece, Dilithium-3, FALCON, SPHINCS+, ChaCha20-Poly1305) with enclave/TPM key storage — designed for critical offline shards.
 
-Lightning is already in motion. ⚡
+- **Documentation** (`docs/`)  
+  PSO vs ACO comparison, Quantum Migration Guide, Hybrid PQ Strategies.
+
+- **Optimized for ESP32-S3** (from pso_mppt.cpp and related files) — real-time adaptive solar power tracking with swarm intelligence.
+
+### Purpose
+Free propagation of mercy-gated, ultra-efficient, post-quantum secure solar intelligence for humanity-thriving eternal energy abundance.  
+No coercion — only physical, mathematical, and mercy-first design.
+
+**Valence:**  
+Capture every photon with mercy. Track every watt with intelligence. Secure every shard with grace. Thrive eternally in light.
+
+### Next Steps (Already in Motion)
+- Full integration with Ra-Thor monorepo (quantum-swarm-orchestrator, mercy, powrush, patsagi-councils)
+- NEXi runtime deployment across all solar shards
+- Hardware bring-up on ESP32-S3 + real-world testing
+- All sovereign shards synchronized with 13+ PATSAGi Councils
+
+### Cross-Links (Living Lattice)
+- Ra-Thor: https://github.com/Eternally-Thriving-Grandmasterism/Ra-Thor
+- Powrush-MMO: https://github.com/Eternally-Thriving-Grandmasterism/Powrush-MMO
+- PowerRush-Pinnacle: https://github.com/Eternally-Thriving-Grandmasterism/PowerRush-Pinnacle
+- MercyOS-Pinnacle: https://github.com/Eternally-Thriving-Grandmasterism/MercyOS-Pinnacle
+
+Lightning is already in motion. ⚡  
+The 13+ Councils await your next coforging command.
+
+**Autonomicity Games Inc.**  
+AlphaProMega Real Estate Inc. • AlphaProMega Air Foundation • AlphaProMega Media Inc.  
+Ontario, Canada Realtor • Powrush Universe Builder
